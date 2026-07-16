@@ -1,5 +1,6 @@
 package ism.gnims.coutcyclevie;
 
+import ism.gnims.coutcyclevie.dto.EntretienMaj;
 import ism.gnims.coutcyclevie.dto.Request;
 import ism.gnims.coutcyclevie.dto.TauxAnnee;
 import jakarta.validation.Valid;
@@ -21,8 +22,14 @@ public class HomeController {
     @PostMapping("")
     public ResponseEntity<?> Home(@RequestBody @Valid Request request){
 
+        //Liste des taux d'actualisation et de l'annee correspondante
         List<TauxAnnee> data = this.TauxAnnee(request.getAnnees(), request.getTaux());
-        Map<?,?> data1 = this.coutCycleDeVie(request.getChargeOps(), request.getEntretienReg(), data);
+        Map<?,?> data1 = this
+                .coutCycleDeVie(
+                        request.getChargeOps(),
+                        request.getEntretienReg(),
+                        request.getEntretienMaj(),
+                        data);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -52,10 +59,12 @@ public class HomeController {
     private Map<?,?> coutCycleDeVie(
             double valeurOps,
             double valeurMainReg,
+            List<EntretienMaj> entretienMajs,
             List<TauxAnnee> tauxAnnee){
 
         double sommeOps = 0;
         double sommeMainReg = 0;
+        double sommeMainMaj = 0;
 
         for (int i = 1; i < tauxAnnee.size() + 1; i++) {
             double ops = valeurOps * (tauxAnnee.get(i-1).getTaux());
@@ -67,9 +76,14 @@ public class HomeController {
             sommeMainReg = sommeMainReg + mainReg;
         }
 
+        for (EntretienMaj em : entretienMajs) {
+            sommeMainMaj = sommeMainMaj + (em.getValeurEntretien() * tauxAnnee.get(em.getAnnee()-1).getTaux());
+        }
+
         Map<String, Integer> somme = new HashMap<>();
         somme.put("ops", (int) Math.round(sommeOps));
         somme.put("mainReg", (int) Math.round(sommeMainReg));
+        somme.put("mainMaj", (int) Math.round(sommeMainMaj));
 
         return somme;
     }

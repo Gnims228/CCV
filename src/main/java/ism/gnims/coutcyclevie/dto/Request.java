@@ -15,8 +15,8 @@ public class Request {
     private double chargeOps;
     private double entretienReg;
     private List<EntretienMaj> EntretienMaj;
+    private double valeurResiduel;
     /*
         private double valeurOffre;
-        private double valeurResiduel;
      */
 }
