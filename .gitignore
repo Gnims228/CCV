@@ -5,8 +5,8 @@ target/
 !**/src/test/**/target/
 
 ### IntelliJ IDEA ###
-.idea
-.mvn
+.idea/
+.mvn/
 .gitattributes
 *.iws
 *.iml
