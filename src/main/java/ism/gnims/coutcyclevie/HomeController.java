@@ -26,6 +26,8 @@ public class HomeController {
         List<TauxAnnee> data = this.TauxAnnee(request.getAnnees(), request.getTaux());
         Map<?,?> data1 = this
                 .coutCycleDeVie(
+                        request.getValeurOffre(),
+                        request.getValeurResiduel(),
                         request.getChargeOps(),
                         request.getEntretienReg(),
                         request.getEntretienMaj(),
@@ -57,6 +59,8 @@ public class HomeController {
     }
 
     private Map<?,?> coutCycleDeVie(
+            double offre,
+            double valeurResiduel,
             double valeurOps,
             double valeurMainReg,
             List<EntretienMaj> entretienMajs,
@@ -65,6 +69,7 @@ public class HomeController {
         double sommeOps = 0;
         double sommeMainReg = 0;
         double sommeMainMaj = 0;
+        valeurResiduel = valeurResiduel*(tauxAnnee.getLast().getTaux());
 
         for (int i = 1; i < tauxAnnee.size() + 1; i++) {
             double ops = valeurOps * (tauxAnnee.get(i-1).getTaux());
@@ -81,9 +86,12 @@ public class HomeController {
         }
 
         Map<String, Integer> somme = new HashMap<>();
+        somme.put("offre", (int) Math.round(offre));
         somme.put("ops", (int) Math.round(sommeOps));
         somme.put("mainReg", (int) Math.round(sommeMainReg));
         somme.put("mainMaj", (int) Math.round(sommeMainMaj));
+        somme.put("valResid", (int) Math.round(valeurResiduel));
+        somme.put("ccv", (int) (offre+sommeOps+sommeMainReg+sommeMainMaj-valeurResiduel));
 
         return somme;
     }
