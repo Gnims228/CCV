@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EntretienMaj {
+public class TauxActualisation {
     private int annee;
-    private double valeurEntretien;
+    private double taux;
 }

@@ -14,7 +14,7 @@ public class Request {
     private int taux;
     private double chargeOps;
     private double entretienReg;
-    private List<EntretienMaj> EntretienMaj;
+    private List<MEntretien> EntretienMaj;
     private double valeurResiduel;
     private double valeurOffre;
 }
