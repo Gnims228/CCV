@@ -16,7 +16,7 @@ import java.util.*;
 
 
 @RestController
-@RequestMapping("/home")
+@RequestMapping("/ccv")
 public class HomeController {
 
     private final HomeService service;
