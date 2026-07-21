@@ -1,6 +1,7 @@
 package ism.gnims.coutcyclevie.controller;
 
 import ism.gnims.coutcyclevie.dto.Request;
+import ism.gnims.coutcyclevie.dto.Response;
 import ism.gnims.coutcyclevie.dto.TauxActualisation;
 import ism.gnims.coutcyclevie.service.HomeService;
 import jakarta.validation.Valid;
@@ -34,7 +35,7 @@ public class HomeController {
         );
 
         //Calcul du cout du cycle de vie
-        Map<?,?> data1 = service.CCV(
+        Response data1 = service.CCV(
                         request.getValeurOffre(),
                         request.getValeurResiduel(),
                         request.getChargeOps(),
