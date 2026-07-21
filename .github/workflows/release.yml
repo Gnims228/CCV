@@ -1,0 +1,43 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Récupération du code
+        uses: actions/checkout@v5
+
+      - name: Configuration de Java 21
+        uses: actions/setup-java@v5
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Cache des dépendances Maven
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Build du jar
+        run: mvn -B package --file pom.xml
+
+      - name: Création de la release GitHub
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          JAR_FILE=$(find target -maxdepth 1 -name "*.jar" ! -name "original-*.jar")
+          gh release create "${{ github.ref_name }}" "$JAR_FILE" \
+            --title "${{ github.ref_name }}" \
+            --generate-notes
