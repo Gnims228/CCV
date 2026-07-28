@@ -7,10 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,7 +33,7 @@ public class HomeService {
         return data;
     }
 
-    public Response CCV(double offre, double valeurResiduel, double valeurOps, double valeurMainReg, List<MEntretien> entretienMajs, List<TauxActualisation> tauxAnnee){
+    public Response CCV(double offre, double valeurResiduel, double valeurOps, double valeurMainReg, Set<MEntretien> entretienMajs, List<TauxActualisation> tauxAnnee){
 
         double sommeOps = 0;
         double sommeMainReg = 0;
@@ -68,30 +65,38 @@ public class HomeService {
             sommeMainReg = sommeMainReg + mainReg;
         }
 
-        Map<Integer, MEntretien> entretienParAnnee = entretienMajs.stream()
-                .collect(Collectors.toMap(MEntretien::getAnnee, em -> em));
 
-        for (int i = 1; i < tauxAnnee.size()+1; i++) {
+        if (!entretienMajs.isEmpty()){
 
-            MEntretien em = entretienParAnnee.get(i);
+            Map<Integer, MEntretien> entretienParAnnee = entretienMajs.stream()
+                    .collect(Collectors.toMap(MEntretien::getAnnee, em -> em));
 
-            if (em!=null){
+            for (int i = 1; i < tauxAnnee.size()+1; i++) {
 
-                double a = em.getValeurEntretien() * (tauxAnnee.get(i-1).getTaux());
-                HighMaintenances.add( (int) a);
+                MEntretien em = entretienParAnnee.get(i);
 
-            }else{
+                if (em!=null){
 
-                HighMaintenances.add(0);
+                    double a = em.getValeurEntretien() * (tauxAnnee.get(i-1).getTaux());
+                    HighMaintenances.add( (int) a);
 
+                }else{
+
+                    HighMaintenances.add(0);
+
+                }
             }
+
+            //Calcul de la somme des entretiens majeurs
+            for (MEntretien em : entretienMajs) {
+                double a = em.getValeurEntretien() * tauxAnnee.get(em.getAnnee()-1).getTaux();
+                sommeMainMaj = sommeMainMaj + a;
+            }
+        }else{
+            sommeMainMaj = 0;
         }
 
-        //Calcul de la somme des entretiens majeurs
-        for (MEntretien em : entretienMajs) {
-            double a = em.getValeurEntretien() * tauxAnnee.get(em.getAnnee()-1).getTaux();
-            sommeMainMaj = sommeMainMaj + a;
-        }
+
 
         double ccv = offre+sommeOps+sommeMainReg+sommeMainMaj-valeurResiduel;
 

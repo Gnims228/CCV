@@ -7,7 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -27,7 +28,7 @@ public class Request {
     @Min(value = 1, message = "La valeur doit etre positive et au moins >= 1")
     @Positive
     private double entretienReg;
-    private List<MEntretien> EntretienMaj;
+    private Set<MEntretien> entretienMajs;
     @Min(value = 1, message = "La valeur doit etre positive et au moins >= 1")
     @Positive
     private double valeurResiduel;

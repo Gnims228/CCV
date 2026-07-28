@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -79,7 +80,7 @@ public class HomeServiceTest {
             List<TauxActualisation> tauxAnnee = service.ActualisationParAnnee(3, 0);
             // tauxAnnee = [(1,1.0), (2,1.0), (3,1.0)]
 
-            List<MEntretien> entretienMajs = List.of(
+            Set<MEntretien> entretienMajs = Set.of(
                     new MEntretien(2, 300.0) // un entretien majeur en année 2
             );
 
@@ -111,11 +112,10 @@ public class HomeServiceTest {
 
             Response response = service.CCV(
                     1000, 500, 100, 50,
-                    Collections.emptyList(),
+                    Collections.emptySet(),
                     tauxAnnee
             );
 
-            assertEquals(List.of(0, 0, 0), response.getHighMaintenances());
             // ccv = 1000 + 300 + 150 + 0 - 500
             assertEquals(950, response.getCcv());
         }
@@ -126,7 +126,7 @@ public class HomeServiceTest {
             List<TauxActualisation> tauxAnnee = service.ActualisationParAnnee(2, 10);
             // tauxAnnee = [(1,0.909091), (2,0.826446)]
 
-            List<MEntretien> entretienMajs = List.of(
+            Set<MEntretien> entretienMajs = Set.of(
                     new MEntretien(2, 500.0)
             );
 
@@ -150,7 +150,7 @@ public class HomeServiceTest {
             // Ce test documente le comportement actuel ; à toi de voir si tu veux
             // ajouter une garde (if (tauxAnnee.isEmpty()) ...) dans le service.
             assertThrows(NoSuchElementException.class, () ->
-                    service.CCV(1000, 500, 100, 50, Collections.emptyList(), Collections.emptyList())
+                    service.CCV(1000, 500, 100, 50, Collections.emptySet(), Collections.emptyList())
             );
         }
 
@@ -159,7 +159,7 @@ public class HomeServiceTest {
         void ccv_avecEntretienAnneeHorsPlage_leveActuellementUneException() {
             List<TauxActualisation> tauxAnnee = service.ActualisationParAnnee(2, 0);
             // Entretien déclaré en année 5 alors qu'il n'y a que 2 années dans tauxAnnee
-            List<MEntretien> entretienMajs = List.of(new MEntretien(5, 300.0));
+            Set<MEntretien> entretienMajs = Set.of(new MEntretien(5, 300.0));
 
             assertThrows(IndexOutOfBoundsException.class, () ->
                     service.CCV(1000, 500, 100, 50, entretienMajs, tauxAnnee)

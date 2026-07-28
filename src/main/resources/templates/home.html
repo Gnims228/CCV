@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CCV — Gnims228 </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root{
+            --paper:#EEF1EC;
+            --paper-line: rgba(22,35,46,0.07);
+            --ink:#16222C;
+            --ink-soft:#4A5A64;
+            --blueprint:#2B6E8C;
+            --blueprint-soft:#7FA6B8;
+            --cost:#BE5A28;
+            --value:#4C7A63;
+            --card:#F7F8F5;
+            --border: rgba(22,35,46,0.14);
+        }
+
+        *{box-sizing:border-box;}
+        html{scroll-behavior:smooth;}
+
+        body{
+            margin:0;
+            background:
+                    linear-gradient(var(--paper-line) 1px, transparent 1px),
+                    linear-gradient(90deg, var(--paper-line) 1px, transparent 1px),
+                    var(--paper);
+            background-size:36px 36px, 36px 36px, auto;
+            color:var(--ink);
+            font-family:'IBM Plex Sans', sans-serif;
+            -webkit-font-smoothing:antialiased;
+        }
+
+        a{color:inherit;}
+
+        .wrap{
+            max-width:1080px;
+            margin:0 auto;
+            padding:0 28px;
+        }
+
+        /* ---------- HEADER ---------- */
+        header{
+            padding:26px 0;
+        }
+        header .wrap{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+        }
+        .brand{
+            font-family:'IBM Plex Mono', monospace;
+            font-size:13px;
+            letter-spacing:0.06em;
+            text-transform:uppercase;
+            color:var(--ink-soft);
+            border:1px solid var(--border);
+            padding:6px 12px;
+            border-radius:3px;
+            background:var(--card);
+        }
+        .brand strong{color:var(--ink);}
+        nav a{
+            font-family:'IBM Plex Mono', monospace;
+            font-size:13px;
+            text-decoration:none;
+            color:var(--blueprint);
+            border-bottom:1px solid var(--blueprint-soft);
+            padding-bottom:2px;
+        }
+        nav a:hover{color:var(--ink);border-color:var(--ink);}
+
+        /* ---------- HERO ---------- */
+        .hero{
+            padding:56px 0 40px;
+        }
+        .eyebrow{
+            font-family:'IBM Plex Mono', monospace;
+            font-size:12.5px;
+            letter-spacing:0.14em;
+            text-transform:uppercase;
+            color:var(--blueprint);
+            margin:0 0 14px;
+        }
+        h1{
+            font-family:'Space Grotesk', sans-serif;
+            font-weight:600;
+            font-size:clamp(32px, 5vw, 52px);
+            line-height:1.08;
+            margin:0 0 18px;
+            letter-spacing:-0.01em;
+        }
+        .lede{
+            font-size:17px;
+            line-height:1.6;
+            color:var(--ink-soft);
+            max-width:56ch;
+            margin:0 0 34px;
+        }
+
+        /* ---------- FORMULA DIAGRAM ---------- */
+        .diagram{
+            margin:44px 0 8px;
+            padding:34px 20px 46px;
+            border:1px solid var(--border);
+            border-radius:6px;
+            background:var(--card);
+            overflow-x:auto;
+        }
+        .diagram-label{
+            font-family:'IBM Plex Mono', monospace;
+            font-size:11.5px;
+            letter-spacing:0.1em;
+            text-transform:uppercase;
+            color:var(--ink-soft);
+            margin-bottom:26px;
+        }
+        .formula-row{
+            display:flex;
+            align-items:flex-start;
+            gap:6px;
+            flex-wrap:nowrap;
+            min-width:640px;
+        }
+        .term{
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            padding:10px 12px 0;
+            border-radius:4px;
+            transition:background 0.15s ease;
+        }
+        .term:hover{background:rgba(43,110,140,0.08);}
+        .term-symbol{
+            font-family:'IBM Plex Mono', monospace;
+            font-size:22px;
+            font-weight:600;
+            color:var(--ink);
+        }
+        .term.result .term-symbol{color:var(--blueprint);}
+        .term.cost .term-symbol{color:var(--cost);}
+        .term.value .term-symbol{color:var(--value);}
+        .connector{
+            width:1px;
+            height:26px;
+            background:var(--border);
+            margin-top:8px;
+        }
+        .term:hover .connector{background:var(--blueprint);}
+        .term-label{
+            font-size:12px;
+            color:var(--ink-soft);
+            text-align:center;
+            max-width:118px;
+            line-height:1.35;
+            margin-top:6px;
+        }
+        .term:hover .term-label{color:var(--ink);}
+        .op{
+            font-family:'IBM Plex Mono', monospace;
+            font-size:20px;
+            color:var(--ink-soft);
+            align-self:center;
+            padding-top:10px;
+        }
+        .eq{
+            font-family:'IBM Plex Mono', monospace;
+            font-size:20px;
+            color:var(--ink-soft);
+            align-self:center;
+            padding:0 4px;
+            padding-top:10px;
+        }
+
+        .cta-row{
+            display:flex;
+            gap:14px;
+            align-items:center;
+            margin-top:36px;
+            flex-wrap:wrap;
+        }
+        .btn{
+            font-family:'IBM Plex Mono', monospace;
+            font-size:13.5px;
+            text-decoration:none;
+            padding:12px 20px;
+            border-radius:4px;
+            display:inline-block;
+        }
+        .btn-primary{
+            background:var(--ink);
+            color:var(--paper);
+        }
+        .btn-primary:hover{background:var(--blueprint);}
+        .btn-ghost{
+            color:var(--ink);
+            border:1px solid var(--border);
+        }
+        .btn-ghost:hover{border-color:var(--ink);}
+
+        /* ---------- SECTION GENERIC ---------- */
+        section{padding:64px 0;}
+        .section-head{
+            display:flex;
+            align-items:baseline;
+            gap:16px;
+            margin-bottom:30px;
+            border-bottom:1px solid var(--border);
+            padding-bottom:16px;
+        }
+        .section-num{
+            font-family:'IBM Plex Mono', monospace;
+            font-size:13px;
+            color:var(--blueprint);
+        }
+        h2{
+            font-family:'Space Grotesk', sans-serif;
+            font-size:26px;
+            font-weight:600;
+            margin:0;
+        }
+
+        .definition p{
+            font-size:16px;
+            line-height:1.75;
+            color:var(--ink-soft);
+            max-width:68ch;
+        }
+        .definition strong{color:var(--ink);}
+
+        /* ---------- TIMELINE ---------- */
+        .timeline{
+            display:flex;
+            position:relative;
+            padding-top:10px;
+        }
+        .timeline::before{
+            content:"";
+            position:absolute;
+            top:34px;
+            left:0;
+            right:0;
+            height:1px;
+            background:var(--border);
+        }
+        .phase{
+            flex:1;
+            padding:0 14px;
+            position:relative;
+        }
+        .phase::before{
+            content:"";
+            position:absolute;
+            top:28px;
+            left:14px;
+            width:1px;
+            height:12px;
+            background:var(--ink-soft);
+        }
+        .phase-num{
+            font-family:'IBM Plex Mono', monospace;
+            font-size:12px;
+            color:var(--blueprint);
+            margin-bottom:2px;
+        }
+        .phase h3{
+            font-family:'Space Grotesk', sans-serif;
+            font-size:16.5px;
+            font-weight:600;
+            margin:16px 0 8px;
+        }
+        .phase p{
+            font-size:13.5px;
+            line-height:1.6;
+            color:var(--ink-soft);
+            margin:0;
+        }
+
+        /* ---------- BENEFITS ---------- */
+        .benefits{
+            display:grid;
+            grid-template-columns:repeat(2, 1fr);
+            gap:1px;
+            background:var(--border);
+            border:1px solid var(--border);
+            border-radius:6px;
+            overflow:hidden;
+        }
+        .benefit{
+            background:var(--card);
+            padding:26px 24px;
+        }
+        .benefit-mark{
+            font-family:'IBM Plex Mono', monospace;
+            font-size:12px;
+            color:var(--cost);
+            margin-bottom:10px;
+        }
+        .benefit h3{
+            font-family:'Space Grotesk', sans-serif;
+            font-size:16px;
+            margin:0 0 8px;
+        }
+        .benefit p{
+            font-size:13.5px;
+            line-height:1.6;
+            color:var(--ink-soft);
+            margin:0;
+        }
+
+        footer{
+            border-top:1px solid var(--border);
+            padding:28px 0 40px;
+            font-family:'IBM Plex Mono', monospace;
+            font-size:12px;
+            color:var(--ink-soft);
+            display:flex;
+            justify-content:space-between;
+            flex-wrap:wrap;
+            gap:10px;
+        }
+
+        @media (max-width:700px){
+            .timeline{flex-direction:column;gap:26px;}
+            .timeline::before{display:none;}
+            .phase::before{display:none;}
+            .benefits{grid-template-columns:1fr;}
+        }
+
+        @media (prefers-reduced-motion: reduce){
+            html{scroll-behavior:auto;}
+            *{transition:none !important;}
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="wrap">
+        <div class="brand">CCV <strong>· Coût de Cycle de Vie</strong></div>
+        <nav><a href="/docs">Faire une simulation →</a></nav>
+    </div>
+</header>
+
+<main class="wrap">
+
+    <section class="hero" style="padding-top:20px;">
+        <p class="eyebrow">Outil d'aide à la décision — équipements industriels</p>
+        <h1>Ce que votre équipement va vraiment coûter, du premier au dernier jour.</h1>
+        <p class="lede">Le prix d'achat n'est qu'une ligne du budget. Le coût de cycle de vie (CCV) additionne tout ce qu'un équipement engage sur sa durée d'utilisation — pour comparer deux solutions sur des bases justes, pas seulement sur leur étiquette de prix.</p>
+
+        <div class="diagram">
+            <div class="diagram-label">Formule — décomposition du coût total</div>
+            <div class="formula-row">
+                <div class="term result">
+                    <div class="term-symbol">CCV</div>
+                    <div class="connector"></div>
+                    <div class="term-label">Coût de cycle de vie total</div>
+                </div>
+                <div class="eq">=</div>
+                <div class="term cost">
+                    <div class="term-symbol">Ca</div>
+                    <div class="connector"></div>
+                    <div class="term-label">Acquisition : achat, installation, mise en service</div>
+                </div>
+                <div class="op">+</div>
+                <div class="term cost">
+                    <div class="term-symbol">Ce</div>
+                    <div class="connector"></div>
+                    <div class="term-label">Exploitation : énergie, consommables, main-d'œuvre</div>
+                </div>
+                <div class="op">+</div>
+                <div class="term cost">
+                    <div class="term-symbol">Cm</div>
+                    <div class="connector"></div>
+                    <div class="term-label">Maintenance : préventive, corrective, pièces</div>
+                </div>
+                <div class="op">+</div>
+                <div class="term cost">
+                    <div class="term-symbol">Cf</div>
+                    <div class="connector"></div>
+                    <div class="term-label">Fin de vie : démantèlement, élimination</div>
+                </div>
+                <div class="op">−</div>
+                <div class="term value">
+                    <div class="term-symbol">Vr</div>
+                    <div class="connector"></div>
+                    <div class="term-label">Valeur résiduelle : revente, recyclage</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-row">
+            <a href="#calculateur" class="btn btn-primary">Lancer un calcul</a>
+            <a href="#definition" class="btn btn-ghost">Comprendre le CCV</a>
+        </div>
+    </section>
+
+    <section id="definition">
+        <div class="section-head">
+            <span class="section-num">01</span>
+            <h2>Qu'est-ce que le coût de cycle de vie ?</h2>
+        </div>
+        <div class="definition">
+            <p>Le <strong>coût de cycle de vie</strong> (ou <em>Life-Cycle Cost</em>, LCC) est la somme actualisée de toutes les dépenses liées à un équipement sur toute sa durée de vie utile : de l'achat jusqu'à sa mise au rebut. Contrairement au prix d'achat seul, il capture les coûts cachés qui apparaissent souvent après la décision — énergie, pièces d'usure, arrêts de production, main-d'œuvre de maintenance.</p>
+            <p>C'est l'indicateur de référence pour comparer deux équipements équivalents dont les profils de coûts diffèrent dans le temps : celui qui coûte le moins cher à l'achat n'est pas toujours celui qui coûte le moins cher à posséder.</p>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-head">
+            <span class="section-num">02</span>
+            <h2>Les quatre phases du cycle</h2>
+        </div>
+        <div class="timeline">
+            <div class="phase">
+                <div class="phase-num">Phase 01</div>
+                <h3>Acquisition</h3>
+                <p>Achat, transport, installation, formation des équipes et mise en service.</p>
+            </div>
+            <div class="phase">
+                <div class="phase-num">Phase 02</div>
+                <h3>Exploitation</h3>
+                <p>Énergie, consommables, main-d'œuvre d'opération sur toute la durée d'usage.</p>
+            </div>
+            <div class="phase">
+                <div class="phase-num">Phase 03</div>
+                <h3>Maintenance</h3>
+                <p>Entretien préventif, réparations, pièces de rechange, arrêts programmés.</p>
+            </div>
+            <div class="phase">
+                <div class="phase-num">Phase 04</div>
+                <h3>Fin de vie</h3>
+                <p>Démantèlement, élimination, moins la valeur résiduelle de revente.</p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-head">
+            <span class="section-num">03</span>
+            <h2>Pourquoi le calculer</h2>
+        </div>
+        <div class="benefits">
+            <div class="benefit">
+                <div class="benefit-mark">→</div>
+                <h3>Comparer sur des bases justes</h3>
+                <p>Mettre en face deux équipements dont le prix d'achat et les coûts d'usage n'évoluent pas de la même façon.</p>
+            </div>
+            <div class="benefit">
+                <div class="benefit-mark">→</div>
+                <h3>Anticiper le budget</h3>
+                <p>Prévoir les dépenses de maintenance et d'exploitation avant qu'elles ne deviennent des surprises.</p>
+            </div>
+            <div class="benefit">
+                <div class="benefit-mark">→</div>
+                <h3>Justifier un investissement</h3>
+                <p>Argumenter un choix d'équipement plus cher à l'achat mais plus économique sur la durée.</p>
+            </div>
+            <div class="benefit">
+                <div class="benefit-mark">→</div>
+                <h3>Réduire les coûts cachés</h3>
+                <p>Identifier tôt les postes de dépense qui pèsent le plus lourd une fois l'équipement en service.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="calculateur">
+        <div class="section-head">
+            <span class="section-num">04</span>
+            <h2>Faire une simulation</h2>
+        </div>
+        <p style="color:var(--ink-soft); font-size:15px; line-height:1.7; max-width:60ch;">
+            Renseignez les coûts de chaque phase pour obtenir le CCV de votre équipement.
+            <br><span style="font-family:'IBM Plex Mono',monospace; font-size:12.5px;">— <code>/docs</code> —</span>
+        </p>
+        <a href="/docs" class="btn btn-primary" style="margin-top:16px;">Accéder au calculateur</a>
+    </section>
+
+</main>
+
+<footer>
+    <div class="wrap" style="display:flex; justify-content:space-between; width:100%; flex-wrap:wrap; gap:10px;">
+        <span>CCV — Calculateur de coût de cycle de vie</span>
+        <span>Spring Boot · API REST</span>
+    </div>
+</footer>
+
+</body>
+</html>
